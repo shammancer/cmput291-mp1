@@ -1,0 +1,4 @@
+{
+    "duser": <DATABASE_USER>,
+    "dpass": <DATABASE_PASSWORD>
+}
