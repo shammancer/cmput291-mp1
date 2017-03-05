@@ -2,7 +2,9 @@ import cx_Oracle
 
 def get_user(usr, con):
     curs = con.cursor()
-    query = ("SELECT usr, pwd, name, email, city, timezone FROM users where usr=:usr")
+    query = None
+    with open('queries/select_user.sql', 'r') as myfile:
+        query = myfile.read()
     curs.prepare(query)
     curs.execute(None, {"usr": usr})
     t = curs.fetchone()
@@ -23,8 +25,9 @@ def get_user(usr, con):
 
 def save_user(u, con):
     curs = con.cursor()
-    query = ("INSERT INTO users(usr, pwd, name, email, city, timezone) "
-            "VALUES (:usr, :pwd, :name, :email, :city, :timezone)")
+    query = None
+    with open('queries/create_user.sql', 'r') as myfile:
+        query = myfile.read()
     curs.prepare(query)
     curs.execute(None, u)
     curs.close()
