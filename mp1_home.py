@@ -2,11 +2,47 @@ import getpass
 import cx_Oracle
 import json
 import random
+import time
 
 import tweet_queries as tq
 
 def help_cmd(params):
     print("Available commands: logout, exit, help")
+
+def compose_tweet(user, params, con):
+    if len(params) < 1:
+        print("Usage: compose <text>")
+        return
+
+    text = " ".join(params)
+    if len(text) > 80:
+        print("Tweet too long.")
+        return
+
+    tdate = cx_Oracle.DateFromTicks(time.time())
+    t = {
+        'writer': user['usr'],
+        'tdate': tdate,
+        'text' : text
+    }
+
+    # Generate ID
+    got_tid = False
+    while not got_tid:
+        t["tid"] = random.randint(0, 2 ** 16) 
+        if tq.get_tweet(t["tid"], con) is None:
+            got_tid = True
+
+    tq.save_tweet(t, con)
+
+    for word in params:
+        if word.startswith('#'):
+            hashtag = word[1:]
+            if tq.get_hashtag(hashtag, con) is None:
+                tq.save_hashtag(hashtag, con)
+            tq.save_mention(t, hashtag, con)
+    print("Tweet Createed")
+
 
 def home_mode(user, con):
     print("Getting the tweets from those you follow")
@@ -28,3 +64,5 @@ def home_mode(user, con):
             return (True, True)
         elif cmd == "more":
             tq.print_tweet_list(tq.get_next_tweets(ftlc, 5))
+        elif cmd == "compose":
+            compose_tweet(user, params, con)

@@ -42,7 +42,7 @@ def print_tweet(t):
 
 def save_tweet(t, con):
     curs = con.cursor()
-    query = None:
+    query = None
     with open('queries/create_tweet.sql', 'r') as myfile:
         query = myfile.read()
     curs.prepare(query)
@@ -50,14 +50,51 @@ def save_tweet(t, con):
     curs.close()
     con.commit()
 
-def get_tweet(tid):
+def get_tweet(tid, con):
     curs = con.cursor()
-    query = None:
-    with open('queries/create_tweet.sql', 'r') as myfile:
+    query = None
+    with open('queries/get_tweet.sql', 'r') as myfile:
         query = myfile.read()
     curs.prepare(query)
     curs.execute(None, {"tid": tid})
-    t = data2tweet(curs.fetchone())
+    tdata = curs.fetchone()
     curs.close()
-    return t
+    if tdata == None:
+        return None
+    return data2tweet(tdata)
 
+def get_hashtag(hashtag, con):
+    curs = con.cursor()
+    query = None
+    with open('queries/get_hashtag.sql', 'r') as myfile:
+        query = myfile.read()
+    curs.prepare(query)
+    curs.execute(None, {"hashtag": hashtag})
+    tdata = curs.fetchone()
+    curs.close()
+    if tdata == None:
+        return None
+    return data2tweet(tdata)
+
+def save_hashtag(hashtag, con):
+    curs = con.cursor()
+    query = None
+    with open('queries/create_hashtag.sql', 'r') as myfile:
+        query = myfile.read()
+    curs.prepare(query)
+    curs.execute(None, {"hashtag": hashtag})
+    curs.close()
+    con.commit()
+
+def save_mention(tweet, hashtag, con):
+    curs = con.cursor()
+    query = None
+    with open('queries/create_mention.sql', 'r') as myfile:
+        query = myfile.read()
+    curs.prepare(query)
+    curs.execute(None, {
+        "tid": tweet["tid"],
+        "hashtag": hashtag
+    })
+    curs.close()
+    con.commit()
