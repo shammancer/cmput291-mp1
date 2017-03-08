@@ -7,7 +7,7 @@ import time
 import tweet_queries as tq
 
 def help_cmd(params):
-    print("Available commands: logout, exit, help")
+    print("Available commands: "+' '.join(params))
 
 def compose_tweet(user, params, con):
     if len(params) < 1:
@@ -50,7 +50,7 @@ def home_mode(user, con):
     tq.print_tweet_list(tq.get_next_tweets(ftlc, 5))
 
     while True:
-        prompt = user["name"].strip() + " (" + str(user["usr"]) + ")" + " #> "
+        prompt = user["name"].strip() + " (" + str(user["usr"]) + ")" + " Home: #> "
         s = input(prompt)
         params = s.split(' ')
         cmd = params[0]
@@ -60,9 +60,35 @@ def home_mode(user, con):
         elif cmd == "exit":
             return False
         elif cmd == "help":
-            help_cmd(params)
+            help_cmd(["logout", "exit","help","more","compose","select"])
             return (True, True)
         elif cmd == "more":
             tq.print_tweet_list(tq.get_next_tweets(ftlc, 5))
         elif cmd == "compose":
             compose_tweet(user, params, con)
+        elif cmd == "select" :
+            tweet_details_mode(user, params, con)
+
+def tweet_details_mode(user, params, con):
+    if len(params)<1:
+        print("Usage: select <tweet id>")
+        return
+    tq.print_tweet_details(tq.get_tweet_details(params[0],con))
+    while True:
+        prompt = user["name"].strip() + " (" + str(user["usr"]) + ")" + " Tweet Details: #> "
+        s = input(prompt)
+        params = s.split(' ')
+        cmd = params[0]
+        del params[0]
+        if cmd == "home":
+            return True
+        if cmd == "help":
+            help_cmd(["home","help"])
+    
+    
+    
+    
+    
+    
+    
+    

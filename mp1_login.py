@@ -51,7 +51,7 @@ def signup(con):
     return (True, user)
 
 def login_mode(con):
-    s = input("#> ")
+    s = input("Login: #> ")
     params = s.split(' ')
     cmd = params[0]
     del params[0]

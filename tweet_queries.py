@@ -6,7 +6,7 @@ def get_next_tweets(curs, num):
     if l == None:
         return None
     for e in l:
-        tl.append = data2tweet(e)
+        tl.append(data2tweet(e))
     return tl;
 
 def get_follower_tweets_curs(u, con):
@@ -15,30 +15,42 @@ def get_follower_tweets_curs(u, con):
     with open('queries/select_follower_tweets.sql', 'r') as myfile:
         query = myfile.read() 
     curs.prepare(query)
-    curs.execute(None, {"flwee": u["usr"]})
+    curs.execute(None, {"flwer": u["usr"]})
     return curs
 
 def data2tweet(t):
-    return {
+    dataObject = {
         "tid": t[0],
         "writer": t[1],
         "tdate": t[2],
-        "text": t[3],
-        "replyto": t[4]
+        "text": t[3]
+    }
+    if len(t) == 5:
+        dataObject.update({"replyto":t[4]})
+    return dataObject
+        
+def formatTweetDetails(t):
+    return {
+        "replies": t[0],
+        "retweets": t[1]
     }
 
 def print_tweet_list(tl):
-    if tl is None:
-        print("No more tweets left");
-    else:
-        for t in tl:
-            print(t)
+    for t in tl:
+        print_tweet(t)
+    if len(tl) < 5:
+        print("No more tweets to display!")
     
 def print_tweet(t):
-    print("TID" + str(t["tid"]))
-    print("Writer: " + t["writer"])
-    print("Date Posted: " + str(t["date"]))
-    print(t["text"])
+    print("TID: " + str(t['tid']))
+    print("Writer: " + str(t['writer']))
+    print("Date Posted: " + str(t['tdate']))
+    print(t['text'].rstrip())
+    print('********************************************')
+    
+def print_tweet_details(t):
+    print("Reply Count: "+str(t['replies']))
+    print("Retweet Count: "+str(t['retweets']))
 
 def save_tweet(t, con):
     curs = con.cursor()
@@ -62,7 +74,21 @@ def get_tweet(tid, con):
     if tdata == None:
         return None
     return data2tweet(tdata)
-
+    
+def get_tweet_details(tid, con):
+    curs = con.cursor()
+    query = None
+    with open('queries/get_tweet_details.sql', 'r') as myfile:
+        query = myfile.read()
+    curs.prepare(query)
+    curs.execute(None, {"tid": tid})
+    tdata = curs.fetchone()
+    if tdata == None:
+        return None
+    return formatTweetDetails(tdata)
+    
+ 
+    
 def get_hashtag(hashtag, con):
     curs = con.cursor()
     query = None
