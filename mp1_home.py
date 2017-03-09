@@ -5,6 +5,7 @@ import random
 import time
 
 import tweet_queries as tq
+import user_queries as uq
 
 def help_cmd(params):
     print("Available commands: "+' '.join(params))
@@ -62,7 +63,7 @@ def home_mode(user, con):
         elif cmd == "exit":
             return False
         elif cmd == "help":
-            help_cmd(["logout", "exit","help","more","compose","select"])
+            help_cmd(["logout", "exit","help","more","compose","select","followers"])
             return (True, True)
         elif cmd == "more":
             tq.print_tweet_list(tq.get_next_tweets(ftlc, 5))
@@ -70,6 +71,48 @@ def home_mode(user, con):
             compose_tweet(user, params, con, None)
         elif cmd == "select" :
             tweet_details_mode(user, params, con)
+        elif cmd == "followers" :
+            followers_mode(user,con)
+def followers_mode(user,con):
+    print("Getting your followers")
+    uq.print_followers(uq.get_followers(user['usr'],con))
+    while True:
+        prompt = user["name"].strip() + " (" + str(user["usr"]) + ")" + " Followers: #> "
+        s = input(prompt)
+        params = s.split(' ')
+        cmd = params[0]
+        del params[0]
+        if cmd == "home":
+            return True
+        elif cmd == "help":
+            help_cmd(["home", "select","help"])
+            return (True, True)
+        elif cmd == "select":
+            follower_detail_mode(user,params,con)
+            
+def follower_detail_mode(user, targetUser, con):
+    if len(targetUser)<1:
+        print("Usage: select <User id>")
+        return
+
+    uq.print_follower_details(uq.get_follower_details(targetUser[0],con))
+    curs = tq.get_user_tweets_curs(targetUser[0],con)
+    tq.print_tweet_list(tq.get_next_tweets(curs,3))
+    while True:
+        prompt = user["name"].strip() + " (" + str(user["usr"]) + ")" + " Follower Details: #> "
+        s = input(prompt)
+        params = s.split(' ')
+        cmd = params[0]
+        del params[0]
+        if cmd == "exit":
+            return True
+        elif cmd == "help":
+            help_cmd(["exit", "more","help","follow"])
+        elif cmd == "more":
+            tq.print_tweet_list(tq.get_next_tweets(curs,3))
+        elif cmd == "follow":
+            uq.save_follow(user['usr'],targetUser[0],con)
+
 
 def tweet_details_mode(user, targetTweet, con):
     if len(targetTweet)<1:
@@ -84,11 +127,11 @@ def tweet_details_mode(user, targetTweet, con):
         del args[0]
         if cmd == "home":
             return True
-        if cmd == "help":
+        elif cmd == "help":
             help_cmd(["home","help", "retweet", "reply"])
-        if cmd == "retweet":
+        elif cmd == "retweet":
             retweet(user,targetTweet[0],con)
-        if cmd == "reply":
+        elif cmd == "reply":
             reply(user,args,con,targetTweet[0])
 def retweet(user,replyto,con):
     rdate = cx_Oracle.DateFromTicks(time.time())

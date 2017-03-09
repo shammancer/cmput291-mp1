@@ -1,6 +1,6 @@
-select nvl(rplyt.rplycnt,0) as replies,nvl(rt.rtcnt,0) as retweets
+select t.text, t.tid, nvl(rplyt.rplycnt,0) as replies,nvl(rt.rtcnt,0) as retweets
 from
-        (select t.tid
+        (select t.tid, t.text
         from tweets t
         where t.tid =:tid
         group by tid,text

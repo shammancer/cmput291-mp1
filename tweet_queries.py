@@ -1,5 +1,36 @@
 import cx_Oracle
 
+
+def print_tweet_list(tl):
+    for t in tl:
+        print_tweet(t)
+    if tl == None:
+        print("No more tweets to display!")
+    
+def print_tweet(t):
+    print("TID: " + str(t['tid']))
+    print("Writer: " + str(t['writer']))
+    print("Date Posted: " + str(t['tdate']))
+    print(t['text'].rstrip())
+    print('********************************************')
+    
+def print_tweet_details(t):
+    print("Text: "+str(t['text']).rstrip())
+    print("TID: "+str(t['tid']))
+    print("Reply Count: "+str(t['replies']))
+    print("Retweet Count: "+str(t['retweets']))
+    
+def get_user_tweets_curs(user,con):
+    curs = con.cursor()
+    query = None
+    with open('queries/select_user_tweets.sql','r') as myfile:
+        query = myfile.read()
+    curs.prepare(query)
+    curs.execute(None,{"usr":user})
+    return curs
+
+
+    
 def get_next_tweets(curs, num):
     l = curs.fetchmany(numRows=num)
     tl = []
@@ -7,7 +38,7 @@ def get_next_tweets(curs, num):
         return None
     for e in l:
         tl.append(data2tweet(e))
-    return tl;
+    return tl
 
 def get_follower_tweets_curs(u, con):
     curs = con.cursor()
@@ -31,37 +62,15 @@ def data2tweet(t):
         
 def formatTweetDetails(t):
     return {
-        "replies": t[0],
-        "retweets": t[1]
+        "text" : t[0],
+        "tid" : t[1],
+        "replies": t[2],
+        "retweets": t[3]
     }
 
-def print_tweet_list(tl):
-    for t in tl:
-        print_tweet(t)
-    if len(tl) < 5:
-        print("No more tweets to display!")
-    
-def print_tweet(t):
-    print("TID: " + str(t['tid']))
-    print("Writer: " + str(t['writer']))
-    print("Date Posted: " + str(t['tdate']))
-    print(t['text'].rstrip())
-    print('********************************************')
-    
-def print_tweet_details(t):
-    print("Reply Count: "+str(t['replies']))
-    print("Retweet Count: "+str(t['retweets']))
 
-def save_tweet(t, con):
-    curs = con.cursor()
-    query = None
-    with open('queries/create_tweet.sql', 'r') as myfile:
-        query = myfile.read()
-    curs.prepare(query)
-    curs.execute(None, t)
-    curs.close()
-    con.commit()
 
+    
 def get_tweet(tid, con):
     curs = con.cursor()
     query = None
@@ -87,7 +96,6 @@ def get_tweet_details(tid, con):
         return None
     return formatTweetDetails(tdata)
     
- 
     
 def get_hashtag(hashtag, con):
     curs = con.cursor()
@@ -102,37 +110,30 @@ def get_hashtag(hashtag, con):
         return None
     return data2tweet(tdata)
 
+    
+def save_tweet(t, con):
+    run_post_query('create_tweet',t,con)
+    
 def save_hashtag(hashtag, con):
-    curs = con.cursor()
-    query = None
-    with open('queries/create_hashtag.sql', 'r') as myfile:
-        query = myfile.read()
-    curs.prepare(query)
-    curs.execute(None, {"hashtag": hashtag})
-    curs.close()
-    con.commit()
+    run_post_query('create_hashtag',{"hashtag": hashtag},con)
 
 def save_mention(tweet, hashtag, con):
-    curs = con.cursor()
-    query = None
-    with open('queries/create_mention.sql', 'r') as myfile:
-        query = myfile.read()
-    curs.prepare(query)
-    curs.execute(None, {
+    run_post_query('create_mention',{
         "tid": tweet["tid"],
         "hashtag": hashtag
-    })
-    curs.close()
-    con.commit()
+    },con)
+    
 def save_retweet(t,con):
+    run_post_query('create_retweet',{"tid":t["tid"], "rdate":t["rdate"],"usr":t["usr"]},con)
+
+def run_post_query(queryName, bindings, con):
     curs = con.cursor()
     query = None
-    with open('queries/create_retweet.sql', 'r') as myfile:
+    with open('queries/'+queryName+'.sql', 'r') as myfile:
         query = myfile.read()
     curs.prepare(query)
-    curs.execute(None, {"tid":t["tid"], "rdate":t["rdate"],"usr":t["usr"]})
+    curs.execute(None,bindings)
     curs.close()
     con.commit()
-
-
+       
 
