@@ -1,19 +1,6 @@
 import cx_Oracle
 import time
-def print_followers(followers):
-    for f in followers:
-        print("ID: "+str(f['usr']))
-        print("Username: "+f['name'])
-        print("Email: "+f['email'])
-        print('********************************************')
-        
-def print_follower_details(details):
-    print("User Information")
-    print("ID: "+str(details['usr']))
-    print("Name: "+details['name'])
-    print("Number of followers: "+str(details['follower_count']))
-    print("Number of followees: "+str(details['following_count']))
-    print('********************************************')
+
         
         
 def get_user(usr, con):

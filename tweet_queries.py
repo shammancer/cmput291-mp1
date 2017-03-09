@@ -1,24 +1,5 @@
 import cx_Oracle
 
-
-def print_tweet_list(tl):
-    for t in tl:
-        print_tweet(t)
-    if tl == None:
-        print("No more tweets to display!")
-    
-def print_tweet(t):
-    print("TID: " + str(t['tid']))
-    print("Writer: " + str(t['writer']))
-    print("Date Posted: " + str(t['tdate']))
-    print(t['text'].rstrip())
-    print('********************************************')
-    
-def print_tweet_details(t):
-    print("Text: "+str(t['text']).rstrip())
-    print("TID: "+str(t['tid']))
-    print("Reply Count: "+str(t['replies']))
-    print("Retweet Count: "+str(t['retweets']))
     
 def get_user_tweets_curs(user,con):
     curs = con.cursor()
