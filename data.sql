@@ -9,30 +9,30 @@ insert into users values (105,'pwd','Sara Farazi','sara@gmail.com','Edmonton',-7
 
 insert into users values (200,'pwd','Genji','g@ow.com','Edmonton',-7);
 insert into users values (201,'pwd','McCree','mcree@ow.com','Edmonton',-7);
-insert into users values (202,'pwd','Pharah','phar@ow.com','Edmonton',-7);
+insert into users values (202,'pwd','Pharah','phar@ow.com','Calgary',-7);
 insert into users values (203,'pwd','Reaper','reap@ow.com','Edmonton',-7);
-insert into users values (204,'pwd','Soldier76','76@ow.com','Edmonton',-7);
-insert into users values (205,'pwd','Sombra','sombra@ow.com','Edmonton',-7);
+insert into users values (204,'pwd','Soldier76','76@ow.com','Beaumont',-7);
+insert into users values (205,'pwd','Sombra','sombra@ow.com','MarkHam',-7);
 insert into users values (206,'pwd','Tracer','trace@ow.com','Edmonton',-7);
-insert into users values (207,'pwd','Bastion','bastion@ow.com','Edmonton',-7);
+insert into users values (207,'pwd','Bastion','bastion@ow.com','Calgary',-7);
 insert into users values (208,'pwd','Hanzo','hanzo@ow.com','Edmonton',-7);
 insert into users values (209,'pwd','Junkrat','junk@ow.com','Edmonton',-7);
 insert into users values (210,'pwd','Mei','mei@ow.com','Edmonton',-7);
-insert into users values (211,'pwd','Torbjorn','torb@ow.com','Edmonton',-7);
+insert into users values (211,'pwd','Torbjorn','torb@ow.com','Beaumont',-7);
 insert into users values (212,'pwd','Widowmaker','widow@ow.com','Edmonton',-7);
 insert into users values (213,'pwd','DVa','dva@ow.com','Edmonton',-7);
 insert into users values (214,'pwd','Reinhardt','rien@ow.com','Edmonton',-7);
 insert into users values (215,'pwd','Roadhog','hog@ow.com','Edmonton',-7);
-insert into users values (216,'pwd','Winston','win@ow.com','Edmonton',-7);
+insert into users values (216,'pwd','Winston','win@ow.com','Calgary',-7);
 insert into users values (217,'pwd','Zarya','zarya@ow.com','Edmonton',-7);
 insert into users values (218,'pwd','Ana','ana@ow.com','Edmonton',-7);
 insert into users values (219,'pwd','Lucio','lucio@ow.com','Edmonton',-7);
-insert into users values (220,'pwd','Mercy','mercy@ow.com','Edmonton',-7);
-insert into users values (221,'pwd','Symmetra','symm@ow.com','Edmonton',-7);
+insert into users values (220,'pwd','Mercy','mercy@ow.com','Beaumont',-7);
+insert into users values (221,'pwd','Symmetra','symm@ow.com','Beaumont',-7);
 insert into users values (222,'pwd','Zenyatta','zen@ow.com','Edmonton',-7);
-insert into users values (223,'pwd','Doomfist','df@ow.com','Edmonton',-7);
+insert into users values (223,'pwd','Doomfist','df@ow.com','MarkHam',-7);
 
-insert into users values(300,'pwd','john doe','jd@ua.com','Edmonton',-7);
+insert into users values(300,'pwd','john doe','jd@ua.com','Red Deer',-7);
 
 insert into follows values (100,102,'15-JAN-2017');
 insert into follows values (105,102,'20-SEP-2014');
