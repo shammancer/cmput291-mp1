@@ -49,7 +49,20 @@ def formatTweetDetails(t):
         "retweets": t[3]
     }
 
-
+def generateQuery(keywords):
+    print(keywords)
+    query ="Select tid, writer, tdate, text from tweets where "
+    conditions = ["tweets.text like '%"+word+"%'" for word in keywords]
+    query += (" OR ".join(conditions))
+    return query
+    
+def search_tweet(keywords,con):
+    curs = con.cursor()
+    query = generateQuery(keywords)
+    print(query)
+    curs.prepare(query)
+    curs.execute(None,{})
+    return curs
 
     
 def get_tweet(tid, con):

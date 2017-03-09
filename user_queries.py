@@ -1,8 +1,28 @@
 import cx_Oracle
 import time
 
-        
-        
+def search_user(keyword,con):
+    curs = con.cursor()
+    query = None
+    with open('queries/search_user.sql', 'r') as myfile:
+        query = myfile.read()
+    curs.prepare(query)
+    curs.execute(None, {"keyword": "%"+keyword[0].strip()+"%"})
+    return curs
+    
+def get_next_users(curs, num):
+    l = curs.fetchmany(numRows=num)
+    if l == None:
+        return None
+    return map(lambda t:{
+        "usr": t[0],
+        "pwd": t[1],
+        "name": t[2],
+        "email": t[3],
+        "city": t[4],
+        "timezone": t[5]
+    },l)
+    
 def get_user(usr, con):
     curs = con.cursor()
     query = None
