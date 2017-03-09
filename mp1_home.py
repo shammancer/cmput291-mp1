@@ -9,7 +9,7 @@ import tweet_queries as tq
 def help_cmd(params):
     print("Available commands: "+' '.join(params))
 
-def compose_tweet(user, params, con):
+def compose_tweet(user, params, con, replyto):
     if len(params) < 1:
         print("Usage: compose <text>")
         return
@@ -23,7 +23,9 @@ def compose_tweet(user, params, con):
     t = {
         'writer': user['usr'],
         'tdate': tdate,
-        'text' : text
+        'text' : text,
+        'tid' : None,
+        'replyto' : replyto
     }
 
     # Generate ID
@@ -41,7 +43,7 @@ def compose_tweet(user, params, con):
             if tq.get_hashtag(hashtag, con) is None:
                 tq.save_hashtag(hashtag, con)
             tq.save_mention(t, hashtag, con)
-    print("Tweet Createed")
+    print("Tweet Created")
 
 
 def home_mode(user, con):
@@ -65,26 +67,43 @@ def home_mode(user, con):
         elif cmd == "more":
             tq.print_tweet_list(tq.get_next_tweets(ftlc, 5))
         elif cmd == "compose":
-            compose_tweet(user, params, con)
+            compose_tweet(user, params, con, None)
         elif cmd == "select" :
             tweet_details_mode(user, params, con)
 
-def tweet_details_mode(user, params, con):
-    if len(params)<1:
+def tweet_details_mode(user, targetTweet, con):
+    if len(targetTweet)<1:
         print("Usage: select <tweet id>")
         return
-    tq.print_tweet_details(tq.get_tweet_details(params[0],con))
+    tq.print_tweet_details(tq.get_tweet_details(targetTweet[0],con))
     while True:
         prompt = user["name"].strip() + " (" + str(user["usr"]) + ")" + " Tweet Details: #> "
         s = input(prompt)
-        params = s.split(' ')
-        cmd = params[0]
-        del params[0]
+        args = s.split(' ')
+        cmd = args[0]
+        del args[0]
         if cmd == "home":
             return True
         if cmd == "help":
-            help_cmd(["home","help"])
-    
+            help_cmd(["home","help", "retweet", "reply"])
+        if cmd == "retweet":
+            retweet(user,targetTweet[0],con)
+        if cmd == "reply":
+            reply(user,args,con,targetTweet[0])
+def retweet(user,replyto,con):
+    rdate = cx_Oracle.DateFromTicks(time.time())
+    t = {
+        'usr': user['usr'],
+        'rdate': rdate,
+        'tid' : replyto
+    }
+    tq.save_retweet(t,con)
+    print("Retweeted!")
+            
+def reply(user, text, con, replyto):
+    compose_tweet(user,text,con,replyto)
+    print("Replied to tweet!")
+
     
     
     

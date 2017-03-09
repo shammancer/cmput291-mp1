@@ -124,3 +124,15 @@ def save_mention(tweet, hashtag, con):
     })
     curs.close()
     con.commit()
+def save_retweet(t,con):
+    curs = con.cursor()
+    query = None
+    with open('queries/create_retweet.sql', 'r') as myfile:
+        query = myfile.read()
+    curs.prepare(query)
+    curs.execute(None, {"tid":t["tid"], "rdate":t["rdate"],"usr":t["usr"]})
+    curs.close()
+    con.commit()
+
+
+
