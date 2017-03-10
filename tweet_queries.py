@@ -50,10 +50,14 @@ def formatTweetDetails(t):
     }
 
 def generateQuery(keywords):
-    print(keywords)
-    query ="Select tid, writer, tdate, text from tweets where "
-    conditions = ["tweets.text like '%"+word+"%'" for word in keywords]
-    query += (" OR ".join(conditions))
+    query ="Select distinct t.tid, t.writer, t.tdate, t.text from tweets t, mentions where "
+    hashtags = [tag[1:] for tag in list(filter(lambda term: term.startswith("#"),keywords))]
+    keywords = [keyword for keyword in keywords if keyword not in hashtags]
+    
+    conditions = ["t.text like '%"+word+"%'" for word in keywords]
+    conditions +=["(t.tid = mentions.tid and mentions.term like '%"+tag+"%')" for tag in hashtags]
+    query+=" OR ".join(conditions)
+    query+=" order by tdate desc"
     return query
     
 def search_tweet(keywords,con):
