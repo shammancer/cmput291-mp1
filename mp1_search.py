@@ -13,7 +13,7 @@ def tweet_search_mode(user,params,con):
         return
     tweets = tq.search_tweet(params,con)
     p.print_tweet_list(tq.get_next_tweets(tweets, 5))
-    search_mode(user,con,TWEET_MODE)
+    search_mode(user,con,TWEET_MODE,tweets)
     
 def user_search_mode(user,params,con):
     if len(params)<1:
@@ -21,9 +21,9 @@ def user_search_mode(user,params,con):
         return
     users = uq.search_user(params,con)
     p.print_users(uq.get_next_users(users,5))
-    search_mode(user,con,USER_MODE)
+    search_mode(user,con,USER_MODE,users)
             
-def search_mode(user,con,type):
+def search_mode(user,con,type, curs):
     while True:
             prompt = user["name"].strip() + " (" + str(user["usr"]) + ")" + " Search Results: #> "
             s = input(prompt)
@@ -33,9 +33,14 @@ def search_mode(user,con,type):
             if cmd == "home":
                 return True
             elif cmd == "help":
-                p.help_cmd(["home", "select","help"])
+                p.help_cmd(["home", "select","help","more"])
             elif cmd == "select":
                 if type == USER_MODE:
                     user_details.user_detail_mode(user,params,con)
                 else:
                     tweet_details.tweet_detail_mode(user,params,con)
+            elif cmd == "more":
+                if type == USER_MODE:
+                    p.print_users(uq.get_next_users(curs,5))
+                else:
+                    p.print_tweet_list(tq.get_next_tweets(curs, 5))

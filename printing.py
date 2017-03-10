@@ -2,7 +2,7 @@
 def print_tweet_list(tl):
     for t in tl:
         print_tweet(t)
-    if tl == None:
+    if tl is None:
         print("No more tweets to display!")
     
 def print_tweet(t):
