@@ -1,6 +1,7 @@
 import tweet_tools as tt
+import tweet_queries as tq
 import printing as p
-def tweet_details_mode(user, targetTweet, con):
+def tweet_detail_mode(user, targetTweet, con):
     if len(targetTweet)<1:
         print("Usage: select <tweet id>")
         return
@@ -14,7 +15,7 @@ def tweet_details_mode(user, targetTweet, con):
         if cmd == "home":
             return True
         elif cmd == "help":
-            help_cmd(["home","help", "retweet", "reply"])
+            p.help_cmd(["home","help", "retweet", "reply"])
         elif cmd == "retweet":
             tt.retweet(user,targetTweet[0],con)
         elif cmd == "reply":

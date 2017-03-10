@@ -9,7 +9,7 @@ USER_MODE = 1
 
 def tweet_search_mode(user,params,con):
     if len(params)<1:
-        print("Usage: search-user <keyword>")
+        print("Usage: search-tweet <keyword(s)>")
         return
     tweets = tq.search_tweet(params,con)
     p.print_tweet_list(tq.get_next_tweets(tweets, 5))

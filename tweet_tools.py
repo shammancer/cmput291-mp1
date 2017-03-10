@@ -1,3 +1,8 @@
+import cx_Oracle
+import time
+import tweet_queries as tq
+import random
+
 def retweet(user,replyto,con):
     rdate = cx_Oracle.DateFromTicks(time.time())
     t = {

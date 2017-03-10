@@ -36,7 +36,7 @@ def home_mode(user, con):
         elif cmd == "compose":
             tt.compose_tweet(user, params, con, None)
         elif cmd == "select" :
-            tweetdetailmode.user_detail_mode(user, params, con)
+            tweetdetailmode.tweet_detail_mode(user, params, con)
         elif cmd == "followers" :
             followermode.followers_mode(user,con)
         elif cmd == "search-user":
