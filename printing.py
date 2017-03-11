@@ -29,6 +29,7 @@ def print_user_details(details):
     print("User Information")
     print("ID: "+str(details['usr']))
     print("Name: "+details['name'])
+    print("Number of tweets: "+str(details['tweet_count']))
     print("Number of followers: "+str(details['follower_count']))
     print("Number of followees: "+str(details['following_count']))
     print('********************************************')
