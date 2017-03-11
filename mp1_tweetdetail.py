@@ -1,8 +1,9 @@
 import tweet_tools as tt
 import tweet_queries as tq
 import printing as p
+import numbers as n
 def tweet_detail_mode(user, targetTweet, con):
-    if len(targetTweet)<1 or not isinstance(targetTweet[0],int) :
+    if len(targetTweet)<1 or not targetTweet[0].isdigit() :
         print("Usage: select <tweet id>")
         return
     p.print_tweet_details(tq.get_tweet_details(targetTweet[0],con))
