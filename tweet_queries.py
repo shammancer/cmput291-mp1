@@ -63,7 +63,6 @@ def generateQuery(keywords):
 def search_tweet(keywords,con):
     curs = con.cursor()
     query = generateQuery(keywords)
-    print(query)
     curs.prepare(query)
     curs.execute(None,{})
     return curs
