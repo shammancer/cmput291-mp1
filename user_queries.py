@@ -89,6 +89,7 @@ def get_followers(user,con):
 def save_follow(flwer,flwee,con):
     start_date = cx_Oracle.DateFromTicks(time.time())
     run_post_query('create_follow',{"flwer":flwer,"flwee":flwee,"start_date":start_date},con)
+    print("Follow successful!")
 
 def save_user(u, con):
     run_post_query('create_user',u,con)

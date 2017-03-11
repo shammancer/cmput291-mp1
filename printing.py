@@ -23,6 +23,7 @@ def print_users(followers):
         print("ID: "+str(f['usr']))
         print("Username: "+f['name'])
         print("Email: "+f['email'])
+        print("City: "+str(f['city']))
         print('********************************************')
         
 def print_user_details(details):
