@@ -1,3 +1,8 @@
+def check_if_empty(t):
+    if t is None:
+        print("No results found!")
+        return 1
+    return 0
 
 def print_tweet_list(tl):
     for t in tl:
@@ -6,6 +11,7 @@ def print_tweet_list(tl):
         print("No more tweets to display!")
     
 def print_tweet(t):
+    if check_if_empty(t): return
     print("TID: " + str(t['tid']))
     print("Writer: " + str(t['writer']))
     print("Date Posted: " + str(t['tdate']))
@@ -13,12 +19,14 @@ def print_tweet(t):
     print('********************************************')
     
 def print_tweet_details(t):
+    if check_if_empty(t): return
     print("Text: "+str(t['text']).rstrip())
     print("TID: "+str(t['tid']))
     print("Reply Count: "+str(t['replies']))
     print("Retweet Count: "+str(t['retweets']))
 	
 def print_users(followers):
+    if check_if_empty(followers): return
     for f in followers:
         print("ID: "+str(f['usr']))
         print("Username: "+f['name'])
@@ -27,6 +35,7 @@ def print_users(followers):
         print('********************************************')
         
 def print_user_details(details):
+    if check_if_empty(details): return
     print("User Information")
     print("ID: "+str(details['usr']))
     print("Name: "+details['name'])
