@@ -39,7 +39,9 @@ def signup(con):
     except ValueError:
         print("The timezone must be a float")
         return (False, None)
-        
+    if len(user["pwd"].strip())<1:
+        print("Must enter a password")
+        return (False,None)
     got_usr = False
     while not got_usr:
         user["usr"] = random.randint(0, 2 ** 16)
