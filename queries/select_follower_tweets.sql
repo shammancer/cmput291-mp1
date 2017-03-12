@@ -1,6 +1,6 @@
 -- Parameters :flwer
-SELECT DISTINCT t.tid, t.writer, t.tdate, t.text
-FROM (SELECT t.tid, t.writer, t.tdate, t.text
+SELECT t.tid, t.writer, t.tdate, t.text
+FROM (SELECT DISTINCT t.tid, t.writer, t.tdate, t.text
         FROM tweets t, follows f
         WHERE f.flwer=:flwer AND 
             f.flwee = t.writer 
