@@ -18,7 +18,9 @@ def tweet_detail_mode(user, targetTweet, con):
         elif cmd == "help":
             p.help_cmd(["home","help", "retweet", "reply"])
         elif cmd == "retweet":
-            if not has_retweeted(user["usr"], targetTweet[0], con):
-            tt.retweet(user,targetTweet[0],con)
+            if not tq.has_retweeted(user["usr"], targetTweet[0], con):
+                tt.retweet(user,targetTweet[0],con)
+            else:
+                print("Already Retweeted")
         elif cmd == "reply":
             tt.reply(user,args,con,targetTweet[0])

@@ -40,3 +40,5 @@ def user_detail_mode(user, targetUser, con):
         elif cmd == "follow":
             if not uq.is_following(user['usr'], targetUser[0], con):
                 uq.save_follow(user['usr'],targetUser[0],con)
+            else:
+                print("Already Following")
