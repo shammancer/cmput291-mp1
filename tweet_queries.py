@@ -120,6 +120,21 @@ def save_mention(tweet, hashtag, con):
         "hashtag": hashtag
     },con)
     
+def has_retweeted(usr, tid, con):
+    curs = con.cursor()
+    query = None
+    with open('queries/has_retweeted.sql', 'r') as myfile:
+        query = myfile.read()
+    curs.prepare(query)
+    curs.execute(None,{"usr":usr, "tid":tid})
+    tdata = curs.fetchone()
+    curs.close()
+    if tdata is None:
+        return False
+    else:
+        return True
+
+    
 def save_retweet(t,con):
     run_post_query('create_retweet',{"tid":t["tid"], "rdate":t["rdate"],"usr":t["usr"]},con)
 

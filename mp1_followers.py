@@ -38,4 +38,5 @@ def user_detail_mode(user, targetUser, con):
         elif cmd == "more":
             p.print_tweet_list(tq.get_next_tweets(curs,3))
         elif cmd == "follow":
-            uq.save_follow(user['usr'],targetUser[0],con)
+            if not uq.is_following(user['usr'], targetUser[0], con):
+                uq.save_follow(user['usr'],targetUser[0],con)

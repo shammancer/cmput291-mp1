@@ -85,7 +85,21 @@ def get_followers(user,con):
         "city": t[4],
         "timezone": t[5]
     },followers)
-    
+
+def is_following(usr, flwer, con):
+    curs = con.cursor()
+    query = None
+    with open('queries/select_follower.sql', 'r') as myfile:
+        query = myfile.read()
+    curs.prepare(query)
+    curs.execute(None,{"usr":usr, "flwer": flwer})
+    followers = curs.fetchall()
+    curs.close()
+    if followers == None:
+        return False
+    else:
+        return True
+           
 def save_follow(flwer,flwee,con):
     start_date = cx_Oracle.DateFromTicks(time.time())
     run_post_query('create_follow',{"flwer":flwer,"flwee":flwee,"start_date":start_date},con)
