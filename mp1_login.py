@@ -39,6 +39,9 @@ def signup(con):
     except ValueError:
         print("The timezone must be a float")
         return (False, None)
+    if len(user["name"]) > 20:
+        print("Your name is too long. May we recommend HotDog")
+        return (False, None)
     if len(user["pwd"].strip())<1:
         print("Must enter a password")
         return (False,None)
