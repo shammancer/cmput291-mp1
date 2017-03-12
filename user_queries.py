@@ -95,13 +95,16 @@ def is_following(usr, flwer, con):
     curs.execute(None,{"usr":usr, "flwer": flwer})
     followers = curs.fetchall()
     curs.close()
-    if followers == None:
+    if followers == None or not followers:
         return False
     else:
         return True
            
 def save_follow(flwer,flwee,con):
     start_date = cx_Oracle.DateFromTicks(time.time())
+    if int(flwer) == int(flwee):
+        print("You can't follow yourself!")
+        return
     run_post_query('create_follow',{"flwer":flwer,"flwee":flwee,"start_date":start_date},con)
     print("Follow successful!")
 
